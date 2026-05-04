@@ -22,27 +22,26 @@
             padding: 20px;
         }
 
-        /* ========== 新增：全屏遮罩层 ========== */
+        /* ========== 全屏遮罩层 ========== */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;         /* 确保在所有内容之上 */
-            background: transparent; /* 完全透明，不影响视觉 */
+            z-index: 9999;
+            background: transparent;
             cursor: default;
-            /* 这条是关键：阻止所有触摸和点击事件穿透 */
             pointer-events: all;
         }
 
-        /* ========== 加载动画区域（保持在遮罩上方可见） ========== */
+        /* ========== 加载动画区域（已调低距离） ========== */
         .loading-container {
-            position: fixed;       /* 改为固定定位，这样就不会被遮罩盖住 */
-            top: 20px;
+            position: fixed;
+            top: 60px;              /* ← 这里从 20px 改成了 60px */
             left: 50%;
             transform: translateX(-50%);
-            z-index: 10000;        /* 比遮罩层还高一层，保证能看到 */
+            z-index: 10000;
             width: 60px;
             height: 60px;
         }
@@ -100,7 +99,7 @@
             to { stroke-dashoffset: 0; }
         }
 
-        /* ========== 按钮和卡片样式保持不变 ========== */
+        /* ========== 按钮和卡片样式 ========== */
         .btn-group {
             display: flex;
             gap: 15px;
@@ -166,10 +165,10 @@
 </head>
 <body>
 
-    <!-- ========== 新增：全屏遮罩（拦截所有交互） ========== -->
+    <!-- ========== 全屏遮罩（拦截所有交互） ========== -->
     <div class="loading-overlay" id="loadingOverlay"></div>
 
-    <!-- ========== 顶部加载动画（始终可见） ========== -->
+    <!-- ========== 顶部加载动画（已调低距离） ========== -->
     <div class="loading-container" id="loadingContainer">
         <div class="loader-circle" id="loaderCircle"></div>
         <div class="checkmark" id="checkmark">
@@ -199,7 +198,7 @@
             const checkmark = document.getElementById('checkmark');
             const overlay = document.getElementById('loadingOverlay');
 
-            // 同时锁定页面滚动
+            // 锁定页面滚动
             document.body.style.overflow = 'hidden';
 
             setTimeout(function() {
@@ -208,10 +207,10 @@
                 // 显示对勾
                 checkmark.classList.add('show');
 
-                // 关键步骤：0.5秒后移除遮罩并恢复滚动，让对勾动画播完再解锁
+                // 0.5秒后移除遮罩并恢复滚动
                 setTimeout(function() {
-                    overlay.style.display = 'none';        // 移除事件拦截
-                    document.body.style.overflow = '';     // 恢复滚动
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
                 }, 500);
             }, 3000);
         });
